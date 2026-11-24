@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HOSSAM GIS | منظومة تقنين أملاك الدولة</title>
+<style>
+:root{--navy:#10263f;--navy2:#173653;--teal:#0e9b8a;--gold:#d5a84d;--bg:#f3f6f9;--ink:#1d2b3a;--muted:#718096;--line:#e4eaf0;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Tahoma,Arial,sans-serif;color:var(--ink)}
+.layout{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+aside{background:linear-gradient(180deg,var(--navy),#0b1c30);color:#fff;padding:25px 17px}
+.brand{display:flex;align-items:center;gap:12px;padding:5px 8px 28px;border-bottom:1px solid #ffffff20}
+.logo{width:43px;height:43px;border-radius:13px;background:var(--teal);display:grid;place-items:center;font-weight:bold;font-size:19px}
+.brand strong{display:block;font-size:16px;letter-spacing:.4px}.brand small{color:#a9bdcf;font-size:11px}
+.navtitle{font-size:11px;color:#829bb1;margin:27px 12px 10px}
+nav a{display:flex;align-items:center;gap:12px;color:#d6e1eb;text-decoration:none;padding:13px 14px;border-radius:10px;margin:4px 0;font-size:13px}
+nav a.active,nav a:hover{background:#ffffff16;color:#fff;border-right:3px solid var(--gold)}
+nav .ico{width:20px;text-align:center;font-size:16px}
+.sidefoot{position:fixed;bottom:20px;color:#8fa6ba;font-size:11px}
+main{min-width:0}.topbar{height:76px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 34px}
+.crumb{font-size:13px;color:var(--muted)}.user{display:flex;align-items:center;gap:11px;font-size:12px}.avatar{width:36px;height:36px;border-radius:50%;background:#e3f4f1;color:#087f72;display:grid;place-items:center;font-weight:bold}
+.content{padding:30px 34px;max-width:1500px;margin:auto}.heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:24px}
+h1{font-size:23px;margin:0 0 8px;color:var(--navy)}.sub{font-size:12px;color:var(--muted)}
+.btn{border:0;border-radius:9px;padding:12px 17px;background:var(--teal);color:white;font-weight:bold;cursor:pointer;font-family:inherit}.btn.secondary{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:19px;box-shadow:0 3px 12px #18334d08}
+.stathead{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.staticon{width:34px;height:34px;border-radius:10px;background:#e9f6f4;color:var(--teal);display:grid;place-items:center;font-size:17px}
+.number{font-size:27px;font-weight:bold;color:var(--navy);margin:13px 0 6px}.trend{font-size:11px;color:#15927e}
+.columns{display:grid;grid-template-columns:1.55fr 1fr;gap:18px;margin-bottom:20px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px;min-width:0}
+.panelhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:17px}.panel h2{font-size:15px;margin:0;color:var(--navy)}
+.map{height:280px;border-radius:11px;overflow:hidden;position:relative;background-color:#e5ece9;background-image:linear-gradient(30deg,transparent 48%,#fff 49%,#fff 51%,transparent 52%),linear-gradient(120deg,transparent 48%,#fff 49%,#fff 51%,transparent 52%),linear-gradient(#d5e0d9 1px,transparent 1px),linear-gradient(90deg,#d5e0d9 1px,transparent 1px);background-size:130px 110px,160px 130px,35px 35px,35px 35px}
+.river{position:absolute;width:130%;height:52px;background:#b8d9e5;transform:rotate(-18deg);top:125px;right:-15%;border:5px solid #d9edf2;border-left:0;border-right:0}
+.road{position:absolute;height:8px;background:#fff;border:1px solid #d4dcd7;transform:rotate(27deg);width:120%;top:75px;right:-10%}
+.parcel{position:absolute;width:74px;height:54px;border:2px solid #138c7e;background:#12a48c30;transform:rotate(-12deg);display:grid;place-items:center;color:#087d70;font-size:10px;font-weight:bold}
+.pin{position:absolute;width:13px;height:13px;border-radius:50% 50% 50% 0;background:#d5a84d;transform:rotate(-45deg);box-shadow:0 2px 5px #0003}
+.maplabel{position:absolute;bottom:12px;right:12px;background:#ffffffed;padding:8px 11px;border-radius:8px;font-size:10px;color:#526477}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--muted);margin-top:12px}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:5px}
+.progressrow{margin:17px 0}.progressmeta{display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px}.track{height:8px;border-radius:10px;background:#edf1f4;overflow:hidden}.fill{height:100%;border-radius:10px;background:var(--teal)}
+.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:12px}th{text-align:right;color:#718096;background:#f8fafb;font-weight:normal;padding:13px}td{padding:14px 13px;border-top:1px solid var(--line)}.status{display:inline-block;border-radius:20px;padding:5px 9px;font-size:10px}.green{background:#e5f6ef;color:#16815f}.orange{background:#fff3df;color:#a66a12}.blue{background:#e9f1fc;color:#376ca8}
+.footer{text-align:center;color:#9aa8b5;font-size:10px;padding:22px}
+
+.uploadgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.uploadbox{border:1px dashed #cbd8e2;border-radius:12px;padding:19px 16px;text-align:center;background:#fbfdfe;min-width:0}
+.uploadicon{margin:auto auto 10px;width:42px;height:42px;border-radius:12px;background:#e9f6f4;color:var(--teal);display:grid;place-items:center;font-size:20px}
+.uploadbox h3{margin:0 0 8px;color:var(--navy);font-size:14px}
+.uploadbox p{font-size:11px;line-height:1.8;color:var(--muted);min-height:40px;margin:0 0 13px}
+.uploadbox input{display:none}
+.uploadbtn{display:inline-block;background:#e8f5f3;color:#087f72;border:1px solid #cde9e4;padding:10px 13px;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer}
+.uploadbtn:hover{background:#d9efeb}
+.filename{font-size:10px;color:#718096;margin-top:12px;overflow-wrap:anywhere}
+.uploadhint{font-size:10px;color:#8a6a2c;background:#fff8e9;padding:11px 13px;border-radius:8px;margin-top:15px;line-height:1.7}
+@media(max-width:700px){.uploadgrid{grid-template-columns:1fr}}
+
+
+
+.save-note{font-size:10px;color:#16815f;background:#eaf7f1;padding:8px 11px;border-radius:8px}
+
+.upload-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.read-progress{margin-top:18px}
+.file-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.file-chip{background:#f6f9fb;border:1px solid var(--line);border-radius:9px;padding:10px;font-size:11px;overflow-wrap:anywhere}
+.column-selects{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.column-selects label{font-size:11px;color:var(--muted);display:flex;flex-direction:column;gap:7px}
+.column-selects select{padding:11px;border:1px solid var(--line);border-radius:8px;background:#fff;font-family:inherit;color:var(--ink);min-width:0}
+.result-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0 18px}
+.result-stat{padding:12px;background:#f6f9fb;border-radius:9px;font-size:11px;color:var(--muted)}
+.result-stat b{display:block;font-size:20px;color:var(--navy);margin-top:5px}
+@media(max-width:700px){.file-summary,.column-selects{grid-template-columns:1fr}.result-stats{grid-template-columns:repeat(2,1fr)}}
+
+@media(max-width:950px){.layout{grid-template-columns:1fr}aside{display:none}.cards{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}.content{padding:22px 16px}.topbar{padding:0 18px}}
+@media(max-width:520px){.cards{grid-template-columns:1fr 1fr}.number{font-size:22px}.heading{align-items:flex-start;flex-direction:column}.topbar{height:64px}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside>
+ <div class="brand"><div class="logo">HG</div><div><strong>HOSSAM GIS</strong><small>STATE PROPERTY SYSTEM</small></div></div>
+ <div class="navtitle">القائمة الرئيسية</div>
+ <nav>
+  <a class="active" href="#"><span class="ico">▦</span>لوحة التحكم</a>
+  <a href="#requests"><span class="ico">▤</span>إدارة الطلبات</a>
+  <a href="#uploads"><span class="ico">⇧</span>رفع ملفات الطلبات</a>
+  <a href="#map"><span class="ico">⌖</span>الخريطة التفاعلية</a>
+  <a href="#"><span class="ico">◫</span>المعاينات والرفع المساحي</a>
+  <a href="#"><span class="ico">▣</span>المستندات والمرفقات</a>
+  <a href="#"><span class="ico">⇄</span>مسار الإجراءات</a>
+  <a href="#"><span class="ico">▥</span>التقارير والإحصائيات</a>
+ </nav>
+ <div class="navtitle">الإعدادات</div>
+ <nav><a href="#"><span class="ico">⚙</span>إعدادات النظام</a><a href="#"><span class="ico">♙</span>المستخدمون والصلاحيات</a></nav>
+ <div class="sidefoot">© 2026 HOSSAM GIS · نسخة تجريبية</div>
+</aside>
+<main>
+ <header class="topbar"><div class="crumb">الرئيسية　/　لوحة التحكم</div><div class="user"><span>مدير النظام</span><div class="avatar">ح</div></div></header>
+ <section class="content">
+  <div class="heading"><div><h1>لوحة متابعة تقنين أملاك الدولة</h1><div class="sub">نظرة عامة على الطلبات والإجراءات والبيانات المكانية</div></div><button class="btn" onclick="alert('هذه واجهة تجريبية — سيتم تفعيل تسجيل الطلبات في المرحلة التالية')">＋ تسجيل طلب جديد</button></div>
+  <div class="cards">
+   <div class="card"><div class="stathead"><span>إجمالي الطلبات</span><span class="staticon">▤</span></div><div class="number" id="dash-total">0</div><div class="sub">عدد سجلات ملف المجمع بعد القراءة</div></div>
+   <div class="card"><div class="stathead"><span>طلبات مقبولة</span><span class="staticon">✓</span></div><div class="number" id="dash-accepted">0</div><div class="sub">مطابقة مع ملف المقبول</div></div>
+   <div class="card"><div class="stathead"><span>طلبات عليها كومنت</span><span class="staticon">◷</span></div><div class="number" id="dash-comments">0</div><div class="sub">مطابقة مع ملف الكومنتات</div></div>
+   <div class="card"><div class="stathead"><span>غير موجودة في المقبول أو الكومنتات</span><span class="staticon">×</span></div><div class="number" id="dash-unmatched">0</div><div class="sub">لم تظهر في الملفين الآخرين</div></div>
+  </div>
+
+  <div class="panel" id="uploads" style="margin-bottom:20px">
+   <div id="excel-lock" style="max-width:520px;margin:22px auto;padding:24px;border:1px solid var(--line);border-radius:14px;background:#fbfdfe;text-align:center">
+    <div style="font-size:30px;margin-bottom:10px">🔒</div>
+    <h2 style="margin:0 0 8px;color:var(--navy);font-size:18px">منطقة محمية — رفع ملفات Excel</h2>
+    <p class="sub" style="line-height:1.8;margin-bottom:16px">أدخل كلمة المرور للسماح بفتح قائمة رفع الملفات وقراءة البيانات.</p>
+    <form id="excel-unlock-form" style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center">
+     <input id="excel-password" type="password" autocomplete="current-password" placeholder="كلمة المرور" required style="min-width:210px;flex:1;padding:12px;border:1px solid var(--line);border-radius:9px;font-family:inherit;text-align:center">
+     <button class="btn" type="submit">فتح القائمة</button>
+    </form>
+    <div id="excel-lock-message" role="alert" style="font-size:11px;color:#b45309;margin-top:12px;min-height:16px"></div>
+   </div>
+   <div id="excel-protected-content" style="display:none">
+   <div class="panelhead"><div><h2>مركز رفع وقراءة ملفات الطلبات</h2><div class="sub" style="margin-top:6px">اختر ملفات Excel الثلاثة، وسيتم تحليلها محليًا داخل المتصفح دون إرسالها إلى سيرفر</div></div><span class="status blue">قراءة محلية</span></div>
+   <div class="uploadgrid">
+    <div class="uploadbox">
+     <div class="uploadicon">▤</div><h3>الملف المجمع</h3><p>الملف الأساسي الذي يحتوي على جميع الطلبات</p>
+     <label class="uploadbtn" for="file-master">اختيار ملف المجمع</label><input id="file-master" type="file" accept=".xlsx,.xls,.xlsm,.csv">
+     <div class="filename" id="master-name">لم يتم اختيار ملف</div>
+    </div>
+    <div class="uploadbox">
+     <div class="uploadicon">✓</div><h3>الطلبات المقبولة</h3><p>ملف الطلبات المقبولة أو المعتمدة</p>
+     <label class="uploadbtn" for="file-approved">اختيار ملف المقبول</label><input id="file-approved" type="file" accept=".xlsx,.xls,.xlsm,.csv">
+     <div class="filename" id="approved-name">لم يتم اختيار ملف</div>
+    </div>
+    <div class="uploadbox">
+     <div class="uploadicon">▧</div><h3>الطلبات التي بها كومنتات</h3><p>ملف الطلبات التي تحتوي على ملاحظات أو تعليقات</p>
+     <label class="uploadbtn" for="file-comments">اختيار ملف الكومنتات</label><input id="file-comments" type="file" accept=".xlsx,.xls,.xlsm,.csv">
+     <div class="filename" id="comments-name">لم يتم اختيار ملف</div>
+    </div>
+   </div>
+   <div class="upload-actions">
+    <button class="btn" id="analyze-btn" onclick="analyzeFiles()">قراءة الملفات وتجهيز المطابقة</button>
+    <button class="btn secondary" onclick="resetFiles()">مسح الاختيارات</button>
+   </div>
+   <div class="upload-actions" style="margin-top:10px">
+    <span id="save-indicator" class="sub" style="align-self:center">ابدأ برفع ملفات Excel الجديدة؛ لا توجد بيانات قديمة محفوظة داخل هذه النسخة.</span>
+   </div>
+   <div id="read-progress" class="read-progress" style="display:none"><div class="progressmeta"><span id="progress-label">جاري تجهيز القراءة...</span><b id="progress-percent">0%</b></div><div class="track"><div class="fill" id="progress-fill" style="width:0%"></div></div></div>
+   <div id="file-summary" class="file-summary"></div>
+   <div id="match-controls" style="display:none;margin-top:20px">
+    <div class="panelhead"><h2>تحديد أعمدة أرقام الطلبات</h2><span class="sub">اختار العمود الصحيح من كل ملف</span></div>
+    <div class="column-selects">
+     <label>رقم الطلب في المجمع<select id="master-col"></select></label>
+     <label>رقم الطلب في المقبول<select id="approved-col"></select></label>
+     <label>رقم الطلب في الكومنتات<select id="comments-col"></select></label>
+    </div>
+    <button class="btn" style="margin-top:15px" onclick="matchRequests()">ابدأ مطابقة الطلبات</button>
+   </div>
+   <div id="match-results" style="display:none;margin-top:22px">
+    <div class="panelhead"><h2>نتيجة المطابقة</h2><button class="btn" onclick="exportResults()">تصدير النتيجة Excel</button></div>
+    <div class="result-stats" id="result-stats"></div>
+    <div class="tablewrap"><table><thead><tr><th>رقم الطلب</th><th>الحالة</th><th>تفاصيل من المجمع</th></tr></thead><tbody id="result-body"></tbody></table></div>
+   </div>
+   <div class="uploadhint">الملفات تتم قراءتها على جهازك ولا يتم رفعها إلى الإنترنت. أول تشغيل يحتاج اتصالًا بالإنترنت لتحميل مكتبة قراءة Excel. يُفضّل إغلاق ملفات Excel الأخرى إذا كانت الملفات كبيرة جدًا.</div>
+   </div>
+  </div>
+  <div class="panel" style="margin-bottom:20px;text-align:center;padding:30px">
+   <h2 style="color:var(--navy);margin:0 0 10px">لوحة متابعة الطلبات</h2>
+   <div class="sub">ستظهر الإحصائيات والخريطة بعد رفع ملفات Excel وقراءة البيانات.</div>
+  </div>
+  <div class="panel" id="requests"><div class="panelhead"><h2>أحدث الطلبات</h2></div>
+   <div id="empty-requests" style="padding:28px;text-align:center;color:var(--muted);font-size:13px">لا توجد طلبات معروضة حاليًا — ارفع ملفات Excel لبدء تحميل البيانات.</div>
+   <div class="tablewrap" id="requests-table-wrap" style="display:none"><table><thead><tr><th>رقم الطلب</th><th>اسم مقدم الطلب</th><th>المركز</th><th>المساحة</th><th>تاريخ التقديم</th><th>حالة الطلب</th></tr></thead><tbody id="requests-body"></tbody></table></div>
+  </div>
+  <div class="footer">HOSSAM GIS — يتم عرض البيانات بعد رفع ملفات Excel فقط</div>
+ </section>
+</main>
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+const fileData={master:null,approved:null,comments:null};
+const fileInputs={master:'file-master',approved:'file-approved',comments:'file-comments'};
+const fileLabels={master:'master-name',approved:'approved-name',comments:'comments-name'};
+let finalRows=[];
+Object.keys(fileInputs).forEach(k=>{
+ document.getElementById(fileInputs[k]).addEventListener('change',e=>{
+  const f=e.target.files[0];
+  document.getElementById(fileLabels[k]).textContent=f?f.name+' — '+(f.size/1048576).toFixed(2)+' MB':'لم يتم اختيار ملف';
+ });
+});
+function setProgress(p,label){
+ document.getElementById('read-progress').style.display='block';
+ document.getElementById('progress-fill').style.width=p+'%';
+ document.getElementById('progress-percent').textContent=p+'%';
+ document.getElementById('progress-label').textContent=label;
+}
+function setBusy(b){
+ const btn=document.getElementById('analyze-btn');btn.disabled=b;btn.textContent=b?'جاري قراءة الملفات...':'قراءة الملفات وتجهيز المطابقة';
+ btn.style.opacity=b?'.65':'1';
+}
+function normalize(v){
+ if(v===null||v===undefined)return '';
+ return String(v).trim().replace(/[\u200e\u200f\u202a-\u202e\s]/g,'').replace(/٫/g,'.').replace(/٬/g,'');
+}
+function headerName(v,i){return (v===null||v===undefined||String(v).trim()==='')?'عمود '+(i+1):String(v).trim();}
+async function readWorkbook(file){
+ const buffer=await file.arrayBuffer();
+ const wb=XLSX.read(buffer,{type:'array',cellDates:true,dense:true});
+ const sheetName=wb.SheetNames[0];
+ if(!sheetName)throw new Error('الملف لا يحتوي على أوراق عمل');
+ const ws=wb.Sheets[sheetName];
+ const matrix=XLSX.utils.sheet_to_json(ws,{header:1,defval:'',raw:false});
+ if(!matrix.length)throw new Error('الورقة الأولى فارغة');
+ const headers=matrix[0].map(headerName);
+ const rows=matrix.slice(1).filter(r=>r.some(c=>String(c??'').trim()!==''));
+ return {name:file.name,sheet:sheetName,headers,rows};
+}
+async function analyzeFiles(){
+ if(typeof XLSX==='undefined'){alert('مكتبة قراءة Excel لم تُحمّل. تأكد من اتصال الإنترنت ثم أعد فتح الصفحة.');return;}
+ const keys=['master','approved','comments'];
+ for(const k of keys){const f=document.getElementById(fileInputs[k]).files[0];if(!f){alert('من فضلك اختر الملفات الثلاثة: المجمع والمقبول والكومنتات.');return;}}
+ setBusy(true);document.getElementById('file-summary').innerHTML='';document.getElementById('match-results').style.display='none';
+ try{
+  for(let i=0;i<keys.length;i++){
+   const k=keys[i],f=document.getElementById(fileInputs[k]).files[0];
+   setProgress(Math.round(i/3*100),'جاري قراءة '+f.name+' ...');
+   await new Promise(r=>setTimeout(r,30));
+   fileData[k]=await readWorkbook(f);
+   setProgress(Math.round((i+1)/3*100),'تمت قراءة '+f.name);
+   const d=fileData[k];
+   const chip=document.createElement('div');chip.className='file-chip';
+   chip.textContent=d.name+' | الورقة: '+d.sheet+' | عدد السجلات: '+d.rows.length.toLocaleString('en-US');
+   document.getElementById('file-summary').appendChild(chip);
+  }
+  keys.forEach(k=>fillColumnSelect(k));
+  document.getElementById('dash-total').textContent=fileData.master.rows.length.toLocaleString('en-US');
+  document.getElementById('match-controls').style.display='block';
+  setProgress(100,'اكتملت قراءة الملفات — حدد أعمدة أرقام الطلبات');
+  await saveAppState();
+ }catch(err){alert('تعذر قراءة أحد الملفات: '+err.message);}
+ finally{setBusy(false);}
+}
+function fillColumnSelect(k){
+ const sel=document.getElementById(k+'-col');sel.innerHTML='';
+ fileData[k].headers.forEach((h,i)=>{const o=document.createElement('option');o.value=i;o.textContent=h;sel.appendChild(o);});
+ const guess=fileData[k].headers.findIndex(h=>/رقم.*طلب|رقم الطلب|طلب|request|serial|code|رقم/i.test(h));
+ if(guess>=0)sel.value=guess;
+}
+function matchRequests(){
+ const m=fileData.master,a=fileData.approved,c=fileData.comments;
+ if(!m||!a||!c)return;
+ const ai=Number(document.getElementById('approved-col').value),ci=Number(document.getElementById('comments-col').value),mi=Number(document.getElementById('master-col').value);
+ const accepted=new Set(a.rows.map(r=>normalize(r[ai])).filter(Boolean));
+ const commented=new Map(c.rows.map(r=>[normalize(r[ci]),r]).filter(x=>x[0]));
+ finalRows=m.rows.map(r=>{
+  const id=normalize(r[mi]),isA=accepted.has(id),isC=commented.has(id);
+  let status=!id?'رقم طلب غير موجود':isA&&isC?'مقبول وعليه كومنت':isA?'مقبول':isC?'عليه كومنت':'غير موجود في المقبول والكومنتات';
+  return {id,status,row:r,commentRow:commented.get(id)||[]};
+ });
+ const count=s=>finalRows.filter(x=>x.status===s).length;
+ const total=finalRows.length;
+ const acceptedCount=count('مقبول')+count('مقبول وعليه كومنت');
+ const commentsCount=count('عليه كومنت')+count('مقبول وعليه كومنت');
+ const unmatchedCount=count('غير موجود في المقبول والكومنتات');
+ const stats=[['إجمالي المجمع',total],['مقبول',acceptedCount],['عليه كومنت',commentsCount],['غير موجود',unmatchedCount]];
+ document.getElementById('result-stats').innerHTML=stats.map(x=>'<div class="result-stat">'+x[0]+'<b>'+x[1].toLocaleString('en-US')+'</b></div>').join('');
+ document.getElementById('dash-total').textContent=total.toLocaleString('en-US');
+ document.getElementById('dash-accepted').textContent=acceptedCount.toLocaleString('en-US');
+ document.getElementById('dash-comments').textContent=commentsCount.toLocaleString('en-US');
+ document.getElementById('dash-unmatched').textContent=unmatchedCount.toLocaleString('en-US');
+ const body=document.getElementById('result-body');body.innerHTML='';
+ finalRows.slice(0,150).forEach(x=>{
+  const tr=document.createElement('tr');const detail=x.row.slice(0,4).map(v=>String(v??'')).filter(Boolean).join(' | ');
+  [x.id||'—',x.status,detail].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td);});body.appendChild(tr);
+ });
+ document.getElementById('match-results').style.display='block';
+ saveAppState();
+ if(finalRows.length>150){const note=document.createElement('div');note.className='sub';note.style.marginTop='10px';note.textContent='يتم عرض أول 150 نتيجة فقط في المعاينة، والتصدير يشمل كل النتائج.';body.parentElement.after(note);}
+}
+function exportResults(){
+ if(!finalRows.length){alert('نفّذ المطابقة أولًا');return;}
+ const headers=fileData.master.headers.concat(['حالة المطابقة','بيانات صف الكومنتات']);
+ const out=[headers,...finalRows.map(x=>x.row.concat([x.status,x.commentRow.join(' | ')]))];
+ const ws=XLSX.utils.aoa_to_sheet(out);const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'نتيجة المطابقة');
+ XLSX.writeFile(wb,'نتيجة_مطابقة_طلبات_تقنين.xlsx');
+}
+function resetFiles(){
+ Object.keys(fileInputs).forEach(k=>{document.getElementById(fileInputs[k]).value='';document.getElementById(fileLabels[k]).textContent='لم يتم اختيار ملف';fileData[k]=null;});
+ document.getElementById('file-summary').innerHTML='';document.getElementById('match-controls').style.display='none';document.getElementById('match-results').style.display='none';document.getElementById('read-progress').style.display='none';finalRows=[];
+ ['dash-total','dash-accepted','dash-comments','dash-unmatched'].forEach(id=>document.getElementById(id).textContent='0');
+ clearAppState();
+}
+
+// قفل واجهة رفع Excel
+const EXCEL_LOCK_SALT='HOSSAM-GIS-EXCEL-LOCK-2026';
+const EXCEL_LOCK_HASH='22b2c9caffdadd34c8c3495fdfffe816f15b7025032236a2229820fff0886807';
+async function sha256Hex(value){
+ const bytes=new TextEncoder().encode(value);const digest=await crypto.subtle.digest('SHA-256',bytes);
+ return Array.from(new Uint8Array(digest)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function unlockExcelArea(){document.getElementById('excel-lock').style.display='none';document.getElementById('excel-protected-content').style.display='block';sessionStorage.setItem('hossam_gis_excel_unlocked','1');}
+document.getElementById('excel-unlock-form').addEventListener('submit',async function(e){
+ e.preventDefault();const input=document.getElementById('excel-password');const msg=document.getElementById('excel-lock-message');
+ try{const candidate=await sha256Hex(EXCEL_LOCK_SALT+input.value);if(candidate===EXCEL_LOCK_HASH){msg.textContent='';input.value='';unlockExcelArea();}else{msg.textContent='كلمة المرور غير صحيحة. حاول مرة أخرى.';input.value='';input.focus();}}
+ catch(err){msg.textContent='تعذر التحقق في هذا المتصفح. افتح الصفحة عبر اتصال آمن (HTTPS) أو خادم محلي.';}
+});
+if(sessionStorage.getItem('hossam_gis_excel_unlocked')==='1')unlockExcelArea();
+
+// حفظ واسترجاع بيانات العمل محليًا باستخدام IndexedDB حتى لا تضيع عند تحديث الصفحة.
+const APP_DB_NAME='HossamGIS_Regularization_v2';
+function openAppDB(){return new Promise((resolve,reject)=>{const req=indexedDB.open(APP_DB_NAME,1);req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains('workspace'))req.result.createObjectStore('workspace');};req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error);});}
+async function saveAppState(){
+ try{const db=await openAppDB();const tx=db.transaction('workspace','readwrite');tx.objectStore('workspace').put({fileData,finalRows,columns:{master:document.getElementById('master-col').value,approved:document.getElementById('approved-col').value,comments:document.getElementById('comments-col').value},savedAt:Date.now()},'current');await new Promise((res,rej)=>{tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});db.close();}
+ catch(err){console.warn('تعذر حفظ جلسة العمل:',err);}
+}
+async function clearAppState(){try{const db=await openAppDB();const tx=db.transaction('workspace','readwrite');tx.objectStore('workspace').delete('current');await new Promise((res,rej)=>{tx.oncomplete=res;tx.onerror=()=>rej(tx.error);});db.close();}catch(err){console.warn('تعذر مسح جلسة العمل:',err);}}
+function renderRestoredResults(){
+ if(!finalRows.length)return;
+ const count=status=>finalRows.filter(x=>x.status===status).length;
+ const total=finalRows.length,acceptedCount=count('مقبول')+count('مقبول وعليه كومنت'),commentsCount=count('عليه كومنت')+count('مقبول وعليه كومنت'),unmatchedCount=count('غير موجود في المقبول والكومنتات');
+ document.getElementById('dash-total').textContent=total.toLocaleString('en-US');document.getElementById('dash-accepted').textContent=acceptedCount.toLocaleString('en-US');document.getElementById('dash-comments').textContent=commentsCount.toLocaleString('en-US');document.getElementById('dash-unmatched').textContent=unmatchedCount.toLocaleString('en-US');
+ document.getElementById('result-stats').innerHTML=[['إجمالي المجمع',total],['مقبول',acceptedCount],['عليه كومنت',commentsCount],['غير موجود',unmatchedCount]].map(x=>'<div class="result-stat">'+x[0]+'<b>'+x[1].toLocaleString('en-US')+'</b></div>').join('');
+ const body=document.getElementById('result-body');body.innerHTML='';finalRows.slice(0,150).forEach(x=>{const tr=document.createElement('tr');const detail=(x.row||[]).slice(0,4).map(v=>String(v??'')).filter(Boolean).join(' | ');[x.id||'—',x.status,detail].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td);});body.appendChild(tr);});document.getElementById('match-results').style.display='block';
+}
+async function restoreAppState(){
+ try{const db=await openAppDB();const tx=db.transaction('workspace','readonly');const req=tx.objectStore('workspace').get('current');const state=await new Promise((res,rej)=>{req.onsuccess=()=>res(req.result);req.onerror=()=>rej(req.error);});db.close();if(!state||!state.fileData||!state.fileData.master)return;
+ Object.assign(fileData,state.fileData);finalRows=state.finalRows||[];
+ for(const k of Object.keys(fileInputs)){const d=fileData[k];if(!d)continue;document.getElementById(fileLabels[k]).textContent=d.name+' — محفوظة داخل جلسة العمل';const chip=document.createElement('div');chip.className='file-chip';chip.textContent=d.name+' | الورقة: '+d.sheet+' | عدد السجلات: '+d.rows.length.toLocaleString('en-US');document.getElementById('file-summary').appendChild(chip);fillColumnSelect(k);}
+ document.getElementById('match-controls').style.display='block';if(state.columns){for(const k of ['master','approved','comments'])if(state.columns[k]!==undefined&&document.getElementById(k+'-col').options.length)document.getElementById(k+'-col').value=state.columns[k];}
+ document.getElementById('dash-total').textContent=fileData.master.rows.length.toLocaleString('en-US');setProgress(100,'تم استرجاع آخر جلسة عمل محفوظة');if(finalRows.length)renderRestoredResults();
+ }catch(err){console.warn('تعذر استرجاع جلسة العمل:',err);}
+}
+restoreAppState();
+</script>
+
+</body>
+</html>
